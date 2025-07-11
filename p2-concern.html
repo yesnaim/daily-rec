@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>고민 질문</title>
+</head>
+<body>
+  <h1>요즘 가장 신경 쓰이는 고민이 있나요?</h1>
+  <button onclick="goToNextPage('study')">📚 학업</button>
+  <button onclick="goToNextPage('relationship')">👥 인간관계</button>
+  <button onclick="goToNextPage('future')">💭 미래</button>
+  <button onclick="goToNextPage('family')">🏠 가족</button>
+  <button onclick="goToNextPage('finance')">💰 경제적 고민</button>
+  <button onclick="goToNextPage('other')">✍ 기타</button>
+
+  <script>
+    function goToNextPage(feeling) {
+      if (feeling === 'study') {
+        window.location.href = 'p3-concern-study.html'; // 학업 고민 페이지로 이동
+      } else if (feeling === 'relationship') {
+        window.location.href = 'p3-concern-relationship.html'; // 인간관계 고민 페이지로 이동
+      } else if (feeling === 'future') {
+        window.location.href = 'p3-concern-future.html'; // 미래 고민 페이지로 이동
+      } else if (feeling === 'family') {
+        window.location.href = 'p3-concern-family.html'; // 가족 고민 페이지로 이동
+      } else if (feeling === 'finance') {
+        window.location.href = 'p3-concern-finance.html'; // 경제적 고민 페이지로 이동
+      } else {
+        window.location.href = 'p3-concern-other.html'; // 기타 고민 페이지로 이동
+      }
+    }
+  </script>
+  <button onclick="goBack()" style="margin-top: 20px; padding: 10px 20px; background-color: #f0ad4e; color: white; border: none; cursor: pointer;">뒤로 가기</button>
+
+  <script>
+    function goBack() {
+      window.history.back(); // 브라우저 히스토리를 이용해 이전 페이지로 이동
+    }
+  </script>
+</body>
+</html>

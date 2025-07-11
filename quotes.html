@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>문구 추천 설문</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .button {
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .input-container {
+      margin-top: 20px;
+      display: none;
+    }
+    .input-container input {
+      padding: 10px;
+      width: 80%;
+      margin-bottom: 10px;
+    }
+    .input-container button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>오늘 기분이 어떤가요?</h1>
+  <button class="button" onclick="goToNextPage('happy')">😊 행복</button>
+  <button class="button" onclick="goToNextPage('sad')">😞 우울</button>
+  <button class="button" onclick="goToNextPage('angry')">😡 화남</button>
+  <button class="button" onclick="goToNextPage('anxious')">😰 불안</button>
+  <button class="button" onclick="goToNextPage('lethargic')">😶 무기력</button>
+  <button class="button" onclick="showInput()">✍ 기타 (직접 입력)</button>
+
+  <div class="input-container" id="inputContainer">
+    <input type="text" id="customInput" placeholder="직접 입력하세요">
+    <button onclick="submitCustomInput()">확인</button>
+  </div>
+
+  <script>
+    function goToNextPage(feeling) {
+      const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
+      surveyData.feeling = feeling; // 선택한 기분 저장
+      localStorage.setItem('surveyData', JSON.stringify(surveyData));
+
+      // 선택한 기분에 따라 다음 페이지로 이동
+      if (feeling === 'happy') {
+        window.location.href = 'p2-happy.html';
+      } else {
+        window.location.href = 'p2-concern.html';
+      }
+    }
+
+    function showInput() {
+      document.getElementById('inputContainer').style.display = 'block';
+    }
+
+    function submitCustomInput() {
+      const input = document.getElementById('customInput').value.trim();
+      if (input) {
+        const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
+        surveyData.feeling = input; // 입력한 기분 저장
+        localStorage.setItem('surveyData', JSON.stringify(surveyData));
+
+        // "기타" 입력 후 기본적으로 고민 페이지로 이동
+        window.location.href = 'p2-concern.html';
+      } else {
+        alert('내용을 입력해주세요.');
+      }
+    }
+  </script>
+  <button onclick="goBack()" style="margin-top: 20px; padding: 10px 20px; background-color: #f0ad4e; color: white; border: none; cursor: pointer;">뒤로 가기</button>
+
+  <script>
+    function goBack() {
+      window.history.back(); // 브라우저 히스토리를 이용해 이전 페이지로 이동
+    }
+  </script>
+</body>
+</html>

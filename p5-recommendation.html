@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>추천 문구</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+  <script>
+    Kakao.init('e3705272a1aa7ed987f050d9ceea6673'); // 여기에 JavaScript 키를 입력하세요
+  </script>
+</head>
+
+<body>
+  <h1>추천 문구</h1>
+  <div id="recommendation"
+    style="font-size: 20px; font-weight: bold; padding: 20px; border: 1px solid #ccc; display: inline-block; margin-top: 20px;">
+    <!-- 추천 문구가 여기에 표시됩니다 -->
+  </div>
+  <div style="margin-top: 20px;">
+    <button onclick="restartSurvey()"
+      style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">다시
+      시작하기</button>
+    <button onclick="goBack()"
+      style="padding: 10px 20px; background-color: #f0ad4e; color: white; border: none; cursor: pointer;">뒤로 가기</button>
+    <button onclick="downloadImage()"
+      style="padding: 10px 20px; background-color: #2196F3; color: white; border: none; cursor: pointer;">이미지로
+      저장하기</button>
+    <button onclick="shareImage()"
+      style="padding: 10px 20px; background-color: #FF5722; color: white; border: none; cursor: pointer;">클립보드에
+      복사</button>
+    <button onclick="shareToKakao()"
+      style="padding: 10px 20px; background-color: #FFEB00; color: black; border: none; cursor: pointer;">카카오톡으로
+      공유하기</button>
+  </div>
+
+  <script>
+    const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
+    const recommendationDiv = document.getElementById('recommendation');
+
+    const recommendations = {
+      cautious: "신중한 당신에게, '작은 결정이 큰 변화를 만듭니다.'",
+      adventurous: "도전적인 당신에게, '새로운 길을 두려워하지 마세요.'",
+      empathetic: "공감 능력이 뛰어난 당신에게, '당신의 따뜻함이 세상을 밝힙니다.'",
+      logical: "논리적인 당신에게, '명확한 사고가 성공의 열쇠입니다.'",
+      other: "당신만의 특별한 성향을 응원합니다!"
+    };
+
+    // URL에서 쿼리 문자열 파싱
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    // 페이지 로드 시 추천 문구 표시
+    window.onload = function () {
+      const traitFromUrl = getQueryParam('trait'); // URL에서 'trait' 값 가져오기
+      const trait = traitFromUrl || surveyData.trait || 'other'; // URL 값이 없으면 기본값 사용
+      recommendationDiv.innerText = recommendations[trait]; // 추천 문구 표시
+    };
+
+    function restartSurvey() {
+      localStorage.clear();
+      window.location.href = 'quotes.html';
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+
+    function downloadImage() {
+      const element = document.getElementById('recommendation');
+      html2canvas(element).then(canvas => {
+        const link = document.createElement('a');
+        link.download = '추천문구.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch(error => console.error('이미지 저장 실패:', error));
+    }
+
+    function shareImage() {
+      const element = document.getElementById('recommendation');
+      html2canvas(element).then(canvas => {
+        canvas.toBlob(blob => {
+          navigator.clipboard.write([
+            new ClipboardItem({ 'image/png': blob })
+          ]).then(() => {
+            alert('이미지가 클립보드에 복사되었습니다. 카카오톡이나 다른 앱에 붙여넣기 해보세요!');
+          }).catch(error => {
+            console.error('클립보드 복사 실패:', error);
+            alert('클립보드 복사에 실패했습니다.');
+          });
+        });
+      }).catch(error => console.error('공유 실패:', error));
+    }
+
+    function shareToKakao() {
+      const trait = surveyData.trait || 'other';
+      const shareUrl = `${window.location.origin}${window.location.pathname}?trait=${trait}`;
+      Kakao.Link.sendDefault({
+        objectType: 'text',
+        text: `추천 문구: ${recommendations[trait]}\n\n결과 보러가기: ${shareUrl}`,
+        link: {
+          mobileWebUrl: shareUrl,
+          webUrl: shareUrl
+        }
+      });
+    }
+  </script>
+</body>
+<button onclick="window.location.href='quotes.html'" style="margin-top:20px;">나도 오늘의 문구 추천받기</button>

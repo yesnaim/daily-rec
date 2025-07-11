@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>기타 이유</title>
+</head>
+<body>
+  <h1>기타 이유로 행복하셨군요!</h1>
+  <p>자세히 입력해주세요:</p>
+  <input type="text" id="customInput" placeholder="이유를 입력하세요" style="padding: 10px; width: 80%; margin-bottom: 10px;">
+  <button onclick="submitCustomInput()" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">확인</button>
+
+  <script>
+    const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
+    function submitCustomInput() {
+      const input = document.getElementById('customInput').value.trim();
+      if (input) {
+        surveyData.happyDetail = input; // 사용자 입력 저장
+        localStorage.setItem('surveyData', JSON.stringify(surveyData));
+        window.location.href = 'p4-traits.html'; // 성향 질문 페이지로 이동
+      } else {
+        alert('내용을 입력해주세요.');
+      }
+    }
+  </script>
+  <button onclick="goBack()" style="margin-top: 20px; padding: 10px 20px; background-color: #f0ad4e; color: white; border: none; cursor: pointer;">뒤로 가기</button>
+
+  <script>
+    function goBack() {
+      window.history.back(); // 브라우저 히스토리를 이용해 이전 페이지로 이동
+    }
+  </script>
+</body>
+</html>

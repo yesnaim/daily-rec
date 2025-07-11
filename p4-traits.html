@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>성향 질문</title>
+</head>
+<body>
+  <h1>평소에 나의 성향은 어떤가요?</h1>
+  <p>아래에서 가장 잘 맞는 항목을 선택해주세요.</p>
+  <button onclick="goToNextPage('cautious')">🤔 신중한 편이다</button>
+  <button onclick="goToNextPage('adventurous')">🌟 도전적인 편이다</button>
+  <button onclick="goToNextPage('empathetic')">💬 타인의 감정을 잘 공감하는 편이다</button>
+  <button onclick="goToNextPage('logical')">📚 논리적으로 사고하는 편이다</button>
+  <button onclick="goToNextPage('other')">✍ 기타</button>
+
+  <script>
+    const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
+    function goToNextPage(trait) {
+      surveyData.trait = trait; // 성향 저장
+      localStorage.setItem('surveyData', JSON.stringify(surveyData));
+      window.location.href = 'p5-recommendation.html'; // 추천 문구 출력 페이지로 이동
+    }
+  </script>
+  <button onclick="goBack()" style="margin-top: 20px; padding: 10px 20px; background-color: #f0ad4e; color: white; border: none; cursor: pointer;">뒤로 가기</button>
+
+  <script>
+    function goBack() {
+      window.history.back(); // 브라우저 히스토리를 이용해 이전 페이지로 이동
+    }
+  </script>
+</body>
+</html>

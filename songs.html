@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>노래 추천</title>
+</head>
+<body>
+  <h1>설문에 응답해주세요</h1>
+  <form id="surveyForm">
+    <label for="genre">좋아하는 음악 장르는?</label>
+    <select id="genre">
+      <option value="pop">팝</option>
+      <option value="rock">록</option>
+      <option value="jazz">재즈</option>
+    </select>
+    <button type="button" onclick="getSongs()">추천 노래 보기</button>
+  </form>
+  <div id="songResult"></div>
+
+  <script>
+    function getSongs() {
+      const genre = document.getElementById('genre').value;
+      let songs = '';
+      if (genre === 'pop') {
+        songs = '팝 노래 추천: "Shape of You - Ed Sheeran"';
+      } else if (genre === 'rock') {
+        songs = '록 노래 추천: "Bohemian Rhapsody - Queen"';
+      } else if (genre === 'jazz') {
+        songs = '재즈 노래 추천: "Take Five - Dave Brubeck"';
+      }
+      document.getElementById('songResult').innerText = songs;
+    }
+  </script>
+  <button onclick="goBack()" style="margin-top: 20px; padding: 10px 20px; background-color: #f0ad4e; color: white; border: none; cursor: pointer;">뒤로 가기</button>
+
+  <script>
+    function goBack() {
+      window.history.back(); // 브라우저 히스토리를 이용해 이전 페이지로 이동
+    }
+  </script>
+</body>
+</html>
