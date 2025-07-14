@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>기타 고민 입력</title>
+</head>
+<body>
+  <h1>기타 고민을 직접 입력해 주세요</h1>
+  <input type="text" id="otherConcern" placeholder="고민을 입력하세요" style="width:80%;padding:10px;">
+  <button onclick="submitOtherConcern()" style="padding:10px 20px; background-color:#4CAF50; color:white; border:none; cursor:pointer;">입력 완료</button>
+
+  <script>
+    const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
+    function submitOtherConcern() {
+      const value = document.getElementById('otherConcern').value.trim();
+      if (!value) {
+        alert('고민을 입력해 주세요!');
+        return;
+      }
+      surveyData.concernDetail = value; // 기타 고민 저장
+      localStorage.setItem('surveyData', JSON.stringify(surveyData));
+      window.location.href = 'p4-traits.html'; // 다음 페이지로 이동
+    }
+  </script>
+  <button onclick="goBack()" style="margin-top:20px; padding:10px 20px; background-color:#f0ad4e; color:white; border:none; cursor:pointer;">뒤로 가기</button>
+  <script>
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+</body>
+</html>

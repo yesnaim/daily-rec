@@ -95,18 +95,19 @@
       }).catch(error => console.error('공유 실패:', error));
     }
 
-    function shareToKakao() {
-      const trait = surveyData.trait || 'other';
-      const shareUrl = `${window.location.origin}${window.location.pathname}?trait=${trait}`;
-      Kakao.Link.sendDefault({
-        objectType: 'text',
-        text: `추천 문구: ${recommendations[trait]}\n\n결과 보러가기: ${shareUrl}`,
-        link: {
-          mobileWebUrl: shareUrl,
-          webUrl: shareUrl
-        }
-      });
+function shareToKakao() {
+  const trait = surveyData.trait || 'other';
+  // 배포된 주소로 직접 설정 (아래 주소를 실제 배포 주소로 변경)
+  const shareUrl = `https://yesnaim.github.io/daily-rec/p5-recommendation.html?trait=${trait}`;
+  Kakao.Link.sendDefault({
+    objectType: 'text',
+    text: `추천 문구: ${recommendations[trait]}\n\n결과 보러가기: ${shareUrl}`,
+    link: {
+      mobileWebUrl: shareUrl,
+      webUrl: shareUrl
     }
+  });
+}
   </script>
 </body>
 <button onclick="window.location.href='quotes.html'" style="margin-top:20px;">나도 오늘의 문구 추천받기</button>
