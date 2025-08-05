@@ -6,35 +6,55 @@
   <title>인간관계 고민</title>
 </head>
 <body>
-  <h1>인간관계에서 어떤 점이 고민되시나요?</h1>
+  <h1>인간관계에서 어떤 점이 고민되나요?</h1>
   <button onclick="goToNextPage('friends')">👫 친구들과의 관계가 어렵다</button>
   <button onclick="goToNextPage('family')">💬 가족과의 소통이 어렵다</button>
   <button onclick="goToNextPage('school')">🏫 학교에서의 관계가 불편하다</button>
   <button onclick="showInput()">✍ 기타</button>
-  
 
   <div id="inputContainer" style="display: none; margin-top: 20px;">
-    <input type="text"<!-- filepath: c:\Users\82108\my-website\p3-concern-relationship.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>인간관계 고민</title>
-</head>
-<button onclick="goBack()" style="margin-top: 20px; padding: 10px 20px; background-color: #f0ad4e; color: white; border: none; cursor: pointer;">뒤로 가기</button>
+    <input type="text" id="customInput" placeholder="기타 고민을 입력하세요" style="padding: 10px; width: 80%; margin-bottom: 10px;">
+    <button onclick="submitCustomInput()" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">확인</button>
+  </div>
 
-<script>
+  <button onclick="goBack()" style="margin-top: 20px; padding: 10px 20px; background-color: #f0ad4e; color: white; border: none; cursor: pointer;">뒤로 가기</button>
+
+  <script>
+  // 고민 종류 저장
+  const urlParams = new URLSearchParams(window.location.search);
+  const concern = urlParams.get('concern');
+  const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
+  surveyData.concern = concern;
+  localStorage.setItem('surveyData', JSON.stringify(surveyData));
+
+  function goToNextPage(detail) {
+    // 항상 최신 데이터 불러오기
+    const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
+    surveyData.concernDetail = detail;
+    localStorage.setItem('surveyData', JSON.stringify(surveyData));
+    window.location.href = 'p4-traits.html';
+  }
+
+  function showInput() {
+    document.getElementById('inputContainer').style.display = 'block';
+  }
+
+  function submitCustomInput() {
+    const input = document.getElementById('customInput').value.trim();
+    if (input) {
+      // 항상 최신 데이터 불러오기
+      const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
+      surveyData.concernDetail = input;
+      localStorage.setItem('surveyData', JSON.stringify(surveyData));
+      window.location.href = 'p4-traits.html';
+    } else {
+      alert('내용을 입력해주세요.');
+    }
+  }
+
   function goBack() {
-    window.history.back(); // 브라우저 히스토리를 이용해 이전 페이지로 이동
+    window.history.back();
   }
 </script>
-<body>
-  <h1>인간관계에서 어떤 점이 고민되시나요?</h1>
-  <button onclick="goToNextPage('friends')">👫 친구들과의 관계가 어렵다</button>
-  <button onclick="goToNextPage('family')">💬 가족과의 소통이 어렵다</button>
-  <button onclick="goToNextPage('school')">🏫 학교에서의 관계가 불편하다</button>
-  <button onclick="showInput()">✍ 기타</button>
-
-  <div id="inputContainer" style="display: none; margin-top: 20px;">
-    <input type="text"
+</body>
+</html>

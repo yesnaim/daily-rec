@@ -8,26 +8,45 @@
 <body>
   <h1>평소에 나의 성향은 어떤가요?</h1>
   <p>아래에서 가장 잘 맞는 항목을 선택해주세요.</p>
-  <button onclick="goToNextPage('cautious')">🤔 신중한 편이다</button>
-  <button onclick="goToNextPage('adventurous')">🌟 도전적인 편이다</button>
-  <button onclick="goToNextPage('empathetic')">💬 타인의 감정을 잘 공감하는 편이다</button>
-  <button onclick="goToNextPage('logical')">📚 논리적으로 사고하는 편이다</button>
-  <button onclick="goToNextPage('other')">✍ 기타</button>
+<button onclick="goToNextPage('cautious')">🤔 신중한 편이다</button>
+<button onclick="goToNextPage('adventurous')">🌟 도전적인 편이다</button>
+<button onclick="goToNextPage('empathetic')">💬 타인의 감정을 잘 공감하는 편이다</button>
+<button onclick="goToNextPage('logical')">📚 논리적으로 사고하는 편이다</button>
+<button onclick="showInput()">✍ 기타</button>
 
-  <script>
+<div id="inputContainer" style="display:none; margin-top:20px;">
+  <input type="text" id="customInput" placeholder="기타 성향을 입력하세요" style="padding:10px; width:80%; margin-bottom:10px;">
+  <button onclick="submitCustomInput()" style="padding:10px 20px; background-color:#4CAF50; color:white; border:none; cursor:pointer;">확인</button>
+</div>
+
+<script>
+  function goToNextPage(trait) {
     const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
-    function goToNextPage(trait) {
-      surveyData.trait = trait; // 성향 저장
-      localStorage.setItem('surveyData', JSON.stringify(surveyData));
-      window.location.href = 'p5-recommendation.html'; // 추천 문구 출력 페이지로 이동
-    }
-  </script>
-  <button onclick="goBack()" style="margin-top: 20px; padding: 10px 20px; background-color: #f0ad4e; color: white; border: none; cursor: pointer;">뒤로 가기</button>
+    surveyData.trait = trait;
+    localStorage.setItem('surveyData', JSON.stringify(surveyData));
+    window.location.href = 'p5-recommendation.html';
+  }
 
-  <script>
-    function goBack() {
-      window.history.back(); // 브라우저 히스토리를 이용해 이전 페이지로 이동
+  function showInput() {
+    document.getElementById('inputContainer').style.display = 'block';
+  }
+
+  function submitCustomInput() {
+    const input = document.getElementById('customInput').value.trim();
+    if (input) {
+      const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
+      surveyData.trait = 'other';
+      surveyData.traitOther = input;
+      localStorage.setItem('surveyData', JSON.stringify(surveyData));
+      window.location.href = 'p5-recommendation.html';
+    } else {
+      alert('성향을 입력해주세요.');
     }
-  </script>
+  }
+
+  function goBack() {
+    window.history.back();
+  }
+</script>
 </body>
 </html>

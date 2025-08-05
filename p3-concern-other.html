@@ -9,19 +9,27 @@
   <input type="text" id="otherConcern" placeholder="고민을 입력하세요" style="width:80%;padding:10px;">
   <button onclick="submitOtherConcern()" style="padding:10px 20px; background-color:#4CAF50; color:white; border:none; cursor:pointer;">입력 완료</button>
 
-  <script>
-    const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
-    function submitOtherConcern() {
-      const value = document.getElementById('otherConcern').value.trim();
-      if (!value) {
-        alert('고민을 입력해 주세요!');
-        return;
-      }
-      surveyData.concernDetail = value; // 기타 고민 저장
-      localStorage.setItem('surveyData', JSON.stringify(surveyData));
-      window.location.href = 'p4-traits.html'; // 다음 페이지로 이동
+ <script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const concern = urlParams.get('concern');
+  // 항상 기존 데이터 불러오기
+  const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
+  surveyData.concern = concern;
+  localStorage.setItem('surveyData', JSON.stringify(surveyData));
+
+  function submitOtherConcern() {
+    const value = document.getElementById('otherConcern').value.trim();
+    if (!value) {
+      alert('고민을 입력해 주세요!');
+      return;
     }
-  </script>
+    // 항상 최신 데이터 불러오기
+    const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
+    surveyData.concernDetail = value; // 기타 고민 저장
+    localStorage.setItem('surveyData', JSON.stringify(surveyData));
+    window.location.href = 'p4-traits.html'; // 다음 페이지로 이동
+  }
+</script>
   <button onclick="goBack()" style="margin-top:20px; padding:10px 20px; background-color:#f0ad4e; color:white; border:none; cursor:pointer;">뒤로 가기</button>
   <script>
     function goBack() {

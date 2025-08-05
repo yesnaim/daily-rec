@@ -6,7 +6,7 @@
   <title>가족 고민</title>
 </head>
 <body>
-  <h1>가족과 관련된 고민이 있으신가요?</h1>
+  <h1>어떤 고민이 있나요?</h1>
   <button onclick="goToNextPage('relationship')">🏠 가족과의 관계가 소원해짐</button>
   <button onclick="goToNextPage('communication')">🗣 가족과 대화가 잘 되지 않음</button>
   <button onclick="goToNextPage('understanding')">😞 가족이 내 고민을 이해하지 못함</button>
@@ -17,29 +17,39 @@
     <button onclick="submitCustomInput()" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">확인</button>
   </div>
 
-  <script>
+ <script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const concern = urlParams.get('concern');
+  // 항상 기존 데이터 불러오기
+  const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
+  surveyData.concern = concern;
+  localStorage.setItem('surveyData', JSON.stringify(surveyData));
+
+  function goToNextPage(detail) {
+    // 기존 데이터 불러오기
     const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
-    function goToNextPage(detail) {
-      surveyData.concernDetail = detail; // 세부 고민 저장
+    surveyData.concernDetail = detail; // 세부 고민 저장
+    localStorage.setItem('surveyData', JSON.stringify(surveyData));
+    window.location.href = 'p4-traits.html'; // 성향 질문 페이지로 이동
+  }
+
+  function showInput() {
+    document.getElementById('inputContainer').style.display = 'block';
+  }
+
+  function submitCustomInput() {
+    const input = document.getElementById('customInput').value.trim();
+    if (input) {
+      // 기존 데이터 불러오기
+      const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
+      surveyData.concernDetail = input; // 사용자 입력 저장
       localStorage.setItem('surveyData', JSON.stringify(surveyData));
       window.location.href = 'p4-traits.html'; // 성향 질문 페이지로 이동
+    } else {
+      alert('내용을 입력해주세요.');
     }
-
-    function showInput() {
-      document.getElementById('inputContainer').style.display = 'block';
-    }
-
-    function submitCustomInput() {
-      const input = document.getElementById('customInput').value.trim();
-      if (input) {
-        surveyData.concernDetail = input; // 사용자 입력 저장
-        localStorage.setItem('surveyData', JSON.stringify(surveyData));
-        window.location.href = 'p4-traits.html'; // 성향 질문 페이지로 이동
-      } else {
-        alert('내용을 입력해주세요.');
-      }
-    }
-  </script>
+  }
+</script>
   <button onclick="goBack()" style="margin-top: 20px; padding: 10px 20px; background-color: #f0ad4e; color: white; border: none; cursor: pointer;">뒤로 가기</button>
 
   <script>

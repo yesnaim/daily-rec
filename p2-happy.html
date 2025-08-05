@@ -6,32 +6,30 @@
   <title>행복한 이유</title>
 </head>
 <body>
-  <h1>어떤 일 때문에 행복하셨나요?</h1>
+  <h1>어떤 일로 인해 행복했나요?</h1>
   <button onclick="goToNextPage('achievement')">✨ 작은 성취를 해서</button>
-  <button onclick="goToNextPage('people')">👫 좋은 사람들과 함께해서</button>
+  <button onclick="goToNextPage('people')">👫 좋은 사람들과 함께 해서</button>
   <button onclick="goToNextPage('special')">🌞 특별한 일이 있어서</button>
   <button onclick="goToNextPage('other')">✍ 기타</button>
   
 
-  <script>
-    function goToNextPage(reason) {
-      if (reason === 'achievement') {
-        window.location.href = 'p3-happy-achievement.html'; // 작은 성취 페이지로 이동
-      } else if (reason === 'people') {
-        window.location.href = 'p3-happy-people.html'; // 좋은 사람들과 함께 페이지로 이동
-      } else if (reason === 'special') {
-        window.location.href = 'p3-happy-special.html'; // 특별한 일 페이지로 이동
-      } else {
-        window.location.href = 'p3-happy-other.html'; // 기타 이유 페이지로 이동
-      }
-    }
-  </script>
-  <button onclick="goBack()" style="margin-top: 20px; padding: 10px 20px; background-color: #f0ad4e; color: white; border: none; cursor: pointer;">뒤로 가기</button>
+ <script>
+  function goToNextPage(reason) {
+    // 기존 데이터 불러오기(없으면 빈 객체)
+    const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
+    // 행복 이유 저장
+    surveyData.happyreason = reason;
+    // 저장
+    localStorage.setItem('surveyData', JSON.stringify(surveyData));
 
-  <script>
-    function goBack() {
-      window.history.back(); // 브라우저 히스토리를 이용해 이전 페이지로 이동
+    if (reason === 'achievement') {
+      window.location.href = 'p3-happy-achievement.html'; // 작은 성취 페이지로 이동
+    } else if (reason === 'people') {
+      window.location.href = 'p3-happy-people.html'; // 좋은 사람들과 함께 페이지로 이동
+    } else if (reason === 'special') {
+      window.location.href = 'p3-happy-special.html'; // 특별한 일 페이지로 이동
+    } else {
+      window.location.href = 'p3-happy-other.html'; // 기타 이유 페이지로 이동
     }
-  </script>
-</body>
-</html>
+  }
+</script>

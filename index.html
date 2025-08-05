@@ -23,16 +23,16 @@
 <body>
   <h1>오늘의 추천</h1>
   <button class="button" onclick="goToQuotes()">오늘의 문구 추천</button>
-  <button class="button" onclick="goToSongs()">오늘의 노래 추천</button>
+  <!-- <button class="button" onclick="goToSongs()">오늘의 노래 추천</button> 삭제 -->
 
   <script>
-    function goToQuotes() {
-      window.location.href = 'quotes.html';
-    }
+  function goToQuotes() {
+    // 설문 시작 시 이전 답변 초기화
+    localStorage.removeItem('surveyData');
+    window.location.href = 'quotes.html';
+  }
 
-    function goToSongs() {
-      window.location.href = 'songs.html';
-    }
+  // goToSongs 함수도 삭제해도 됩니다.
   </script>
 </body>
 </html>

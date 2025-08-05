@@ -8,7 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
   <script>
-    Kakao.init('e3705272a1aa7ed987f050d9ceea6673'); // 여기에 JavaScript 키를 입력하세요
+    Kakao.init('e3705272a1aa7ed987f050d9ceea6673');
   </script>
 </head>
 
@@ -47,17 +47,17 @@
       other: "당신만의 특별한 성향을 응원합니다!"
     };
 
-    // URL에서 쿼리 문자열 파싱
     function getQueryParam(param) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(param);
     }
 
-    // 페이지 로드 시 추천 문구 표시
     window.onload = function () {
-      const traitFromUrl = getQueryParam('trait'); // URL에서 'trait' 값 가져오기
-      const trait = traitFromUrl || surveyData.trait || 'other'; // URL 값이 없으면 기본값 사용
-      recommendationDiv.innerText = recommendations[trait]; // 추천 문구 표시
+      const traitFromUrl = getQueryParam('trait');
+      const trait = traitFromUrl || surveyData.trait || 'other';
+      recommendationDiv.innerText = recommendations[trait];
+      // 디버깅용
+      console.log(JSON.parse(localStorage.getItem('surveyData')));
     };
 
     function restartSurvey() {
@@ -95,19 +95,138 @@
       }).catch(error => console.error('공유 실패:', error));
     }
 
-function shareToKakao() {
-  const trait = surveyData.trait || 'other';
-  // 배포된 주소로 직접 설정 (아래 주소를 실제 배포 주소로 변경)
-  const shareUrl = `https://yesnaim.github.io/daily-rec/p5-recommendation.html?trait=${trait}`;
-  Kakao.Link.sendDefault({
-    objectType: 'text',
-    text: `추천 문구: ${recommendations[trait]}\n\n결과 보러가기: ${shareUrl}`,
-    link: {
-      mobileWebUrl: shareUrl,
-      webUrl: shareUrl
+    function shareToKakao() {
+      const trait = surveyData.trait || 'other';
+      const shareUrl = `https://yesnaim.github.io/daily-rec/p5-recommendation.html?trait=${trait}`;
+      Kakao.Link.sendDefault({
+        objectType: 'text',
+        text: `추천 문구: ${recommendations[trait]}\n\n결과 보러가기: ${shareUrl}`,
+        link: {
+          mobileWebUrl: shareUrl,
+          webUrl: shareUrl
+        }
+      });
     }
-  });
-}
   </script>
 </body>
 <button onclick="window.location.href='quotes.html'" style="margin-top:20px;">나도 오늘의 문구 추천받기</button>
+<button onclick="goToGoogleForm()">내 답변 Google Forms로 제출하기</button>
+<script>
+function goToGoogleForm() {
+  const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
+  const formUrl = 'https://forms.gle/GUkxqT7kbw5ZTC9M8';
+  const params = new URLSearchParams();
+
+  // 오늘 기분이 어떤가요?
+  if (surveyData.feelingOther) {
+    params.set('entry.1473777974', '__other_option__');
+    params.set('entry.1473777974.other_option_response', surveyData.feelingOther);
+  } else {
+    params.set('entry.1473777974', surveyData.feeling || '');
+  }
+
+  // (행복) 어떤 일 때문에 행복하셨나요?
+  if (surveyData.happyreasonOther) {
+    params.set('entry.925254719', '__other_option__');
+    params.set('entry.925254719.other_option_response', surveyData.happyreasonOther);
+  } else {
+    params.set('entry.925254719', surveyData.happyreason || '');
+  }
+
+  // (고민) 요즘 가장 신경 쓰이는 고민이 있나요?
+  if (surveyData.concernOther) {
+    params.set('entry.700817478', '__other_option__');
+    params.set('entry.700817478.other_option_response', surveyData.concernOther);
+  } else {
+    params.set('entry.700817478', surveyData.concern || '');
+  }
+
+  // (행복-성취)
+  if (surveyData.happyDetailOther) {
+    params.set('entry.133454939', '__other_option__');
+    params.set('entry.133454939.other_option_response', surveyData.happyDetailOther);
+  } else {
+    params.set('entry.133454939', surveyData.happyDetail || '');
+  }
+
+  // (행복-좋은사람들)
+  if (surveyData.happyPeopleOther) {
+    params.set('entry.859710171', '__other_option__');
+    params.set('entry.859710171.other_option_response', surveyData.happyPeopleOther);
+  } else {
+    params.set('entry.859710171', surveyData.happyPeople || '');
+  }
+
+  // (행복-특별한일)
+  if (surveyData.happySpecialOther) {
+    params.set('entry.369558758', '__other_option__');
+    params.set('entry.369558758.other_option_response', surveyData.happySpecialOther);
+  } else {
+    params.set('entry.369558758', surveyData.happySpecial || '');
+  }
+
+  // 행복 기타 (장문형)
+  params.set('entry.2063687973', surveyData.happylong1 || '');
+
+  // 고민 세부(학업/인간관계/미래/가족/경제) - 선택된 고민 entry에만 concernDetail을 넣기
+  switch (surveyData.selectedConcern) {
+    case '학업':
+      if (surveyData.concernDetailOther) {
+        params.set('entry.2014154132', '__other_option__');
+        params.set('entry.2014154132.other_option_response', surveyData.concernDetailOther);
+      } else {
+        params.set('entry.2014154132', surveyData.concernDetail || '');
+      }
+      break;
+    case '인간관계':
+      if (surveyData.concernDetailOther) {
+        params.set('entry.761377551', '__other_option__');
+        params.set('entry.761377551.other_option_response', surveyData.concernDetailOther);
+      } else {
+        params.set('entry.761377551', surveyData.concernDetail || '');
+      }
+      break;
+    case '미래':
+      if (surveyData.concernDetailOther) {
+        params.set('entry.593882092', '__other_option__');
+        params.set('entry.593882092.other_option_response', surveyData.concernDetailOther);
+      } else {
+        params.set('entry.593882092', surveyData.concernDetail || '');
+      }
+      break;
+    case '가족':
+      if (surveyData.concernDetailOther) {
+        params.set('entry.1323373544', '__other_option__');
+        params.set('entry.1323373544.other_option_response', surveyData.concernDetailOther);
+      } else {
+        params.set('entry.1323373544', surveyData.concernDetail || '');
+      }
+      break;
+    case '경제':
+      if (surveyData.concernDetailOther) {
+        params.set('entry.396654452', '__other_option__');
+        params.set('entry.396654452.other_option_response', surveyData.concernDetailOther);
+      } else {
+        params.set('entry.396654452', surveyData.concernDetail || '');
+      }
+      break;
+    // 기타 고민 세부가 있다면 여기에 추가
+  }
+
+  // (고민-기타) (장문형)
+  params.set('entry.764879100', surveyData.concernlong2 || '');
+
+  // (성향) 평소에 나의 성향은 어떤가요?
+  if (surveyData.traitOther) {
+    params.set('entry.2080718979', '__other_option__');
+    params.set('entry.2080718979.other_option_response', surveyData.traitOther);
+  } else {
+    params.set('entry.2080718979', surveyData.trait || '');
+  }
+
+  // 실제로 어떤 값이 들어가는지 콘솔에서 확인
+  console.log(formUrl + '?' + params.toString());
+  window.open(`${formUrl}?${params.toString()}`, '_blank');
+}
+</script>
+</html>

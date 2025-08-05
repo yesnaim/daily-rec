@@ -13,31 +13,35 @@
   <button onclick="goToNextPage('family')">🏠 가족</button>
   <button onclick="goToNextPage('finance')">💰 경제적 고민</button>
   <button onclick="goToNextPage('other')">✍ 기타</button>
-  
-
-  <script>
-    function goToNextPage(feeling) {
-      if (feeling === 'study') {
-        window.location.href = 'p3-concern-study.html'; // 학업 고민 페이지로 이동
-      } else if (feeling === 'relationship') {
-        window.location.href = 'p3-concern-relationship.html'; // 인간관계 고민 페이지로 이동
-      } else if (feeling === 'future') {
-        window.location.href = 'p3-concern-future.html'; // 미래 고민 페이지로 이동
-      } else if (feeling === 'family') {
-        window.location.href = 'p3-concern-family.html'; // 가족 고민 페이지로 이동
-      } else if (feeling === 'finance') {
-        window.location.href = 'p3-concern-finance.html'; // 경제적 고민 페이지로 이동
-      } else {
-        window.location.href = 'p3-concern-other.html'; // 기타 고민 페이지로 이동
-      }
-    }
-  </script>
   <button onclick="goBack()" style="margin-top: 20px; padding: 10px 20px; background-color: #f0ad4e; color: white; border: none; cursor: pointer;">뒤로 가기</button>
 
   <script>
-    function goBack() {
-      window.history.back(); // 브라우저 히스토리를 이용해 이전 페이지로 이동
+  function goToNextPage(feeling) {
+    // 기존 데이터 불러오기(없으면 빈 객체)
+    const surveyData = JSON.parse(localStorage.getItem('surveyData')) || {};
+    // 고민(feeling) 저장
+    surveyData.concern = feeling;
+    // 저장
+    localStorage.setItem('surveyData', JSON.stringify(surveyData));
+
+    let nextPage = '';
+    if (feeling === 'study') {
+      nextPage = 'p3-concern-study.html';
+    } else if (feeling === 'relationship') {
+      nextPage = 'p3-concern-relationship.html';
+    } else if (feeling === 'future') {
+      nextPage = 'p3-concern-future.html';
+    } else if (feeling === 'family') {
+      nextPage = 'p3-concern-family.html';
+    } else if (feeling === 'finance') {
+      nextPage = 'p3-concern-finance.html';
+    } else {
+      nextPage = 'p3-concern-other.html';
     }
-  </script>
-</body>
-</html>
+    window.location.href = `${nextPage}?concern=${feeling}`;
+  }
+
+  function goBack() {
+    window.history.back();
+  }
+</script>
